@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "SJS/TEN BSA Assessment"
+  },
+  "tools": {
+    "tbsa": "TBSA",
+    "dbsa": "DBSA",
+    "eraser": "Eraser"
+  },
+  "actions": {
+    "undo": "Undo",
+    "clear": "Clear",
+    "submit": "Submit Assessment"
+  },
+  "views": {
+    "front": "FRONT",
+    "back": "BACK"
+  },
+  "brush": {
+    "label": "Brush"
+  },
+  "info": {
+    "tbsa": "all involved skin incl. erythema (pink).",
+    "dbsa": "blisters, erosions, Nikolsky+, necrotic — erythema excluded (grey)."
+  },
+  "language": {
+    "toggle": "FR",
+    "current": "EN"
+  }
+}

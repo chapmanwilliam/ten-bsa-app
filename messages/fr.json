@@ -1,0 +1,30 @@
+{
+  "app": {
+    "title": "Évaluation SCB SJS/NET"
+  },
+  "tools": {
+    "tbsa": "SCBt",
+    "dbsa": "SCBd",
+    "eraser": "Gomme"
+  },
+  "actions": {
+    "undo": "Annuler",
+    "clear": "Effacer",
+    "submit": "Soumettre l'évaluation"
+  },
+  "views": {
+    "front": "AVANT",
+    "back": "ARRIÈRE"
+  },
+  "brush": {
+    "label": "Pinceau"
+  },
+  "info": {
+    "tbsa": "toute peau atteinte, y compris l'érythème (rose).",
+    "dbsa": "bulles, érosions, Nikolsky+, nécrose — érythème exclu (gris)."
+  },
+  "language": {
+    "toggle": "EN",
+    "current": "FR"
+  }
+}
