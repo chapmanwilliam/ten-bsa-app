@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ChangePasswordDialog } from '@/components/ui/ChangePasswordDialog';
 import { createClient } from '@/lib/supabase/client';
 import {
   listPatients,
@@ -39,6 +40,7 @@ export default function PatientsPage() {
   const [formInitials, setFormInitials] = useState('');
   const [formDob, setFormDob] = useState('');
   const [formSite, setFormSite] = useState<Site>('france');
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -135,6 +137,12 @@ export default function PatientsPage() {
               {t('nav.admin')}
             </button>
           )}
+          <button
+            onClick={() => setShowPasswordDialog(true)}
+            className="px-3 py-1.5 text-xs rounded-lg border border-[#d0d0c8] hover:bg-[#f0f0ea] transition-colors"
+          >
+            {t('nav.changePassword')}
+          </button>
           <LanguageToggle />
           <button
             onClick={handleSignOut}
@@ -291,6 +299,11 @@ export default function PatientsPage() {
           </div>
         )}
       </div>
+
+      <ChangePasswordDialog
+        open={showPasswordDialog}
+        onClose={() => setShowPasswordDialog(false)}
+      />
 
       {/* Add Patient Dialog */}
       {showDialog && (

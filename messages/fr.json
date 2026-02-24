@@ -41,8 +41,22 @@
     "patients": "Patients",
     "admin": "Admin",
     "signOut": "Déconnexion",
+    "changePassword": "Mot de passe",
     "backToPatients": "← Patients",
     "backToPatient": "← Patient"
+  },
+  "changePassword": {
+    "title": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "tooShort": "Le mot de passe doit comporter au moins 8 caractères.",
+    "submit": "Mettre à jour",
+    "submitting": "Mise à jour…",
+    "success": "Mot de passe modifié avec succès.",
+    "error": "Échec du changement de mot de passe. Vérifiez votre mot de passe actuel.",
+    "cancel": "Annuler"
   },
   "admin": {
     "title": "Gestion des cliniciens",
@@ -179,7 +193,13 @@
     "notesTranslation": "Traduction IA",
     "scorten": "SCORTEN",
     "scortenMortality": "Mortalité prédite",
-    "trendChart": "Tendance SCBt / SCBd"
+    "trendChart": "Tendance SCBt / SCBd",
+    "photoFileName": "Fichier",
+    "photoFileSize": "Taille",
+    "photoUploadedBy": "Téléchargé par",
+    "photoDate": "Date",
+    "photoCaption": "Légende",
+    "photoClose": "Fermer"
   },
   "connection": {
     "offline": "Pas de connexion internet — veuillez vous reconnecter avant de soumettre."
@@ -204,7 +224,9 @@
     "notEnrolled": "Non configurée",
     "resetMfa": "Réinitialiser MFA",
     "resetConfirm": "Réinitialiser la MFA de ce clinicien ? Il devra la reconfigurer à la prochaine connexion.",
-    "resetSuccess": "MFA réinitialisée avec succès."
+    "resetSuccess": "MFA réinitialisée avec succès.",
+    "copied": "Copié !",
+    "copySecret": "Copier"
   },
   "adminDashboard": {
     "title": "Tableau de bord admin",

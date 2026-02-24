@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ChangePasswordDialog } from '@/components/ui/ChangePasswordDialog';
 import { createClient } from '@/lib/supabase/client';
 import { getCurrentClinician, listClinicians } from './actions';
 import { AdminTabs, type AdminTab } from './components/AdminTabs';
@@ -22,6 +23,7 @@ export default function AdminPage() {
   const [currentUser, setCurrentUser] = useState<Clinician | null>(null);
   const [clinicians, setClinicians] = useState<Clinician[]>([]);
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -73,6 +75,12 @@ export default function AdminPage() {
           >
             {t('nav.patients')}
           </button>
+          <button
+            onClick={() => setShowPasswordDialog(true)}
+            className="px-3 py-1.5 text-xs rounded-lg border border-[#d0d0c8] hover:bg-[#f0f0ea] transition-colors"
+          >
+            {t('nav.changePassword')}
+          </button>
           <LanguageToggle />
           <button
             onClick={handleSignOut}
@@ -103,6 +111,11 @@ export default function AdminPage() {
         {activeTab === 'export' && <ExportPanel />}
         {activeTab === 'auditLog' && <AuditLogViewer />}
       </div>
+
+      <ChangePasswordDialog
+        open={showPasswordDialog}
+        onClose={() => setShowPasswordDialog(false)}
+      />
     </div>
   );
 }

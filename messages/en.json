@@ -41,8 +41,22 @@
     "patients": "Patients",
     "admin": "Admin",
     "signOut": "Sign out",
+    "changePassword": "Password",
     "backToPatients": "← Patients",
     "backToPatient": "← Patient"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "mismatch": "Passwords do not match.",
+    "tooShort": "Password must be at least 8 characters.",
+    "submit": "Update Password",
+    "submitting": "Updating…",
+    "success": "Password changed successfully.",
+    "error": "Failed to change password. Check your current password and try again.",
+    "cancel": "Cancel"
   },
   "admin": {
     "title": "Clinician Management",
@@ -179,7 +193,13 @@
     "notesTranslation": "AI Translation",
     "scorten": "SCORTEN",
     "scortenMortality": "Predicted mortality",
-    "trendChart": "TBSA / DBSA Trend"
+    "trendChart": "TBSA / DBSA Trend",
+    "photoFileName": "File",
+    "photoFileSize": "Size",
+    "photoUploadedBy": "Uploaded by",
+    "photoDate": "Date",
+    "photoCaption": "Caption",
+    "photoClose": "Close"
   },
   "connection": {
     "offline": "No internet connection — please reconnect before submitting."
@@ -204,7 +224,9 @@
     "notEnrolled": "Not set up",
     "resetMfa": "Reset MFA",
     "resetConfirm": "Reset this clinician's MFA? They will need to set it up again on next login.",
-    "resetSuccess": "MFA reset successfully."
+    "resetSuccess": "MFA reset successfully.",
+    "copied": "Copied!",
+    "copySecret": "Copy"
   },
   "adminDashboard": {
     "title": "Admin Dashboard",

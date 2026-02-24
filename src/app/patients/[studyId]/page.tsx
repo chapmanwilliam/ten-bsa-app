@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import { useRouter, useParams } from 'next/navigation';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ChangePasswordDialog } from '@/components/ui/ChangePasswordDialog';
+import { PhotoLightbox } from '@/components/ui/PhotoLightbox';
 import { TrendChart } from '@/components/charts/TrendChart';
 import { createClient } from '@/lib/supabase/client';
 import {
@@ -37,6 +39,8 @@ export default function PatientDetailPage() {
   const [photos, setPhotos] = useState<Record<string, AssessmentPhoto[]>>({});
   const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const [showPasswordDialog, setShowPasswordDialog] = useState(false);
+  const [lightboxPhoto, setLightboxPhoto] = useState<AssessmentPhoto | null>(null);
 
   useEffect(() => {
     async function load() {
@@ -135,6 +139,12 @@ export default function PatientDetailPage() {
           <span className="text-xs text-[#888]">({patient.initials})</span>
         </div>
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowPasswordDialog(true)}
+            className="px-3 py-1.5 text-xs rounded-lg border border-[#d0d0c8] hover:bg-[#f0f0ea] transition-colors"
+          >
+            {t('nav.changePassword')}
+          </button>
           <LanguageToggle />
           <button
             onClick={handleSignOut}
@@ -322,19 +332,24 @@ export default function PatientDetailPage() {
                           const url = photoUrls[photo.id];
                           if (!url) return null;
                           return (
-                            <div key={photo.id} className="flex-shrink-0 text-center">
+                            <button
+                              key={photo.id}
+                              type="button"
+                              onClick={() => setLightboxPhoto(photo)}
+                              className="flex-shrink-0 text-center cursor-pointer group"
+                            >
                               {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img
                                 src={url}
                                 alt={photo.caption || photo.file_name}
-                                className="h-24 sm:h-32 w-auto rounded border border-[#e0e0d8]"
+                                className="h-24 sm:h-32 w-auto rounded border border-[#e0e0d8] group-hover:border-[#c95a8a] transition-colors"
                               />
                               {photo.caption && (
                                 <p className="text-[9px] text-[#999] mt-0.5 max-w-[100px] truncate">
                                   {photo.caption}
                                 </p>
                               )}
-                            </div>
+                            </button>
                           );
                         })}
                       </div>
@@ -368,6 +383,20 @@ export default function PatientDetailPage() {
           </div>
         )}
       </div>
+
+      <ChangePasswordDialog
+        open={showPasswordDialog}
+        onClose={() => setShowPasswordDialog(false)}
+      />
+
+      {lightboxPhoto && photoUrls[lightboxPhoto.id] && (
+        <PhotoLightbox
+          photo={lightboxPhoto}
+          url={photoUrls[lightboxPhoto.id]}
+          uploadedBy={clinicians[lightboxPhoto.uploaded_by] ?? null}
+          onClose={() => setLightboxPhoto(null)}
+        />
+      )}
     </div>
   );
 }

@@ -19,6 +19,7 @@ export default function MfaEnrollPage() {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -155,9 +156,23 @@ export default function MfaEnrollPage() {
           {secret && (
             <div className="text-center">
               <p className="text-[10px] text-[#999] mb-1">{t('mfa.secretLabel')}</p>
-              <code className="text-xs font-mono bg-[#f5f5f0] px-3 py-1.5 rounded border border-[#e8e8e0] select-all break-all">
-                {secret}
-              </code>
+              <div className="inline-flex items-center gap-1.5">
+                <code className="text-xs font-mono bg-[#f5f5f0] px-3 py-1.5 rounded border border-[#e8e8e0] select-all break-all">
+                  {secret}
+                </code>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(secret);
+                    setCopied(true);
+                    setTimeout(() => setCopied(false), 2000);
+                  }}
+                  className="flex-shrink-0 px-2 py-1.5 text-[10px] font-medium rounded border border-[#d0d0c8] bg-white
+                             hover:bg-[#f0f0ea] active:bg-[#e8e8e0] transition-colors text-[#666]"
+                >
+                  {copied ? t('mfa.copied') : t('mfa.copySecret')}
+                </button>
+              </div>
             </div>
           )}
 
