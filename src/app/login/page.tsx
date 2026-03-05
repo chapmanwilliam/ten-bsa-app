@@ -2,9 +2,11 @@
 
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { useRateLimit } from '@/hooks/useRateLimit';
 
 export default function LoginPage() {
   const t = useTranslations();
@@ -13,9 +15,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  const { isLockedOut, secondsRemaining, recordFailure, resetAttempts } = useRateLimit();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLockedOut) return;
     setError(null);
 
     startTransition(async () => {
@@ -26,9 +30,12 @@ export default function LoginPage() {
       });
 
       if (authError) {
+        recordFailure();
         setError(t('login.error'));
         return;
       }
+
+      resetAttempts();
 
       // Check MFA status — redirect to enrol or verify as needed
       const { data: factorsData } = await supabase.auth.mfa.listFactors();
@@ -108,17 +115,29 @@ export default function LoginPage() {
                          placeholder:text-[#aaa]"
               placeholder="••••••••"
             />
+            <div className="text-right mt-1">
+              <Link
+                href="/forgot-password"
+                className="text-[10px] text-[#888] hover:text-[#c95a8a] transition-colors"
+              >
+                {t('login.forgotPassword')}
+              </Link>
+            </div>
           </div>
 
-          {error && (
+          {isLockedOut ? (
+            <div className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
+              {t('login.lockedOut', { seconds: secondsRemaining })}
+            </div>
+          ) : error ? (
             <div className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
               {error}
             </div>
-          )}
+          ) : null}
 
           <button
             type="submit"
-            disabled={isPending}
+            disabled={isPending || isLockedOut}
             className="w-full py-2.5 rounded-lg bg-[#c95a8a] text-white text-sm font-semibold
                        hover:bg-[#b44d7a] active:bg-[#a0426c] disabled:opacity-50
                        transition-colors cursor-pointer"
@@ -131,6 +150,14 @@ export default function LoginPage() {
         <p className="text-center text-[10px] text-[#999] mt-6">
           {t('login.footer')}
         </p>
+        <div className="text-center mt-3">
+          <Link
+            href="/demo"
+            className="text-[11px] text-[#c95a8a] hover:text-[#b44d7a] font-medium transition-colors"
+          >
+            {t('demo.tryIt')} →
+          </Link>
+        </div>
       </div>
     </div>
   );

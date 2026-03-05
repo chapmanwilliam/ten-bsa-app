@@ -215,12 +215,118 @@ export class DrawingEngine {
     return this.calculateAll();
   }
 
+  /**
+   * Load a previously-saved layer image onto a canvas layer.
+   * Used to pre-fill body maps from a prior assessment.
+   * After loading, the image is clipped to the body silhouette and BSA is recalculated.
+   */
+  async loadLayerImage(
+    view: View,
+    layer: 'tbsa' | 'dbsa',
+    imageUrl: string,
+  ): Promise<void> {
+    const id = `draw-${layer}-${view}`;
+    const ctx = this.ctxs[id];
+    if (!ctx) return;
+
+    const img = await this.loadImg(imageUrl);
+    ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    this.applyBodyClip(view);
+    this.recalc();
+  }
+
+  /**
+   * Export a summary PNG: front + back body maps side by side,
+   * with a header showing patient ID, date, TBSA% and DBSA%.
+   * Returns a Blob for saving.
+   */
+  exportSummaryBlob(patientId: string, date: string): Promise<Blob | null> {
+    const anteriorComposite = this.buildCompositeCanvas('anterior');
+    const posteriorComposite = this.buildCompositeCanvas('posterior');
+    if (!anteriorComposite || !posteriorComposite) return Promise.resolve(null);
+
+    const calc = this.calculateAll();
+    const padding = 30;
+    const headerHeight = 90;
+    const labelHeight = 32;
+    const bodyW = CANVAS_WIDTH;
+    const bodyH = CANVAS_HEIGHT;
+    const gap = 20;
+    const totalW = padding * 2 + bodyW * 2 + gap;
+    const totalH = headerHeight + bodyH + labelHeight + padding;
+
+    const out = document.createElement('canvas');
+    out.width = totalW;
+    out.height = totalH;
+    const ctx = out.getContext('2d')!;
+
+    // White background
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, totalW, totalH);
+
+    // Header: title
+    ctx.fillStyle = '#1a1a1a';
+    ctx.font = 'bold 28px system-ui, -apple-system, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('SJS/TEN BSA Assessment', padding, 36);
+
+    // Header: patient + date
+    ctx.font = '18px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#555';
+    ctx.fillText(`Patient: ${patientId}    Date: ${date}`, padding, 62);
+
+    // Header: TBSA / DBSA percentages
+    ctx.font = 'bold 20px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#c95a8a';
+    const tbsaText = `TBSA: ${calc.tbsa.toFixed(1)}%`;
+    ctx.fillText(tbsaText, padding, 86);
+    const tbsaWidth = ctx.measureText(tbsaText).width;
+    ctx.fillStyle = '#636e72';
+    ctx.fillText(`DBSA: ${calc.dbsa.toFixed(1)}%`, padding + tbsaWidth + 30, 86);
+
+    // Body maps
+    const bodyY = headerHeight;
+    const leftX = padding;
+    const rightX = padding + bodyW + gap;
+    ctx.drawImage(anteriorComposite, leftX, bodyY);
+    ctx.drawImage(posteriorComposite, rightX, bodyY);
+
+    // Labels under body maps
+    ctx.font = 'bold 16px system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#888';
+    ctx.textAlign = 'center';
+    ctx.fillText('FRONT', leftX + bodyW / 2, bodyY + bodyH + 22);
+    ctx.fillText('BACK', rightX + bodyW / 2, bodyY + bodyH + 22);
+
+    return new Promise((resolve) => {
+      out.toBlob((blob) => resolve(blob), 'image/png');
+    });
+  }
+
+  private buildCompositeCanvas(view: View): HTMLCanvasElement | null {
+    const bodyCanvas = this.cvs[`body-${view}`];
+    const tbsaCanvas = this.cvs[`draw-tbsa-${view}`];
+    const dbsaCanvas = this.cvs[`draw-dbsa-${view}`];
+    if (!bodyCanvas || !tbsaCanvas || !dbsaCanvas) return null;
+
+    const c = document.createElement('canvas');
+    c.width = CANVAS_WIDTH;
+    c.height = CANVAS_HEIGHT;
+    const ctx = c.getContext('2d')!;
+    ctx.drawImage(bodyCanvas, 0, 0);
+    ctx.drawImage(tbsaCanvas, 0, 0);
+    ctx.drawImage(dbsaCanvas, 0, 0);
+    return c;
+  }
+
   // --- Private methods ---
 
   private loadImg(src: string): Promise<HTMLImageElement> {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const img = new Image();
+      img.crossOrigin = 'anonymous';
       img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
       img.src = src;
     });
   }

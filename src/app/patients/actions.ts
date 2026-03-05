@@ -157,6 +157,83 @@ export async function getAssessmentImageUrls(
   return result;
 }
 
+export async function getPreviousAssessmentMaps(
+  patientId: string,
+): Promise<{
+  date: string;
+  anteriorTbsa: string | null;
+  anteriorDbsa: string | null;
+  posteriorTbsa: string | null;
+  posteriorDbsa: string | null;
+} | null> {
+  const supabase = await createClient();
+
+  // Get the most recent assessment for this patient
+  const { data, error } = await supabase
+    .from('assessments')
+    .select('assessment_date, canvas_anterior_tbsa, canvas_anterior_dbsa, canvas_posterior_tbsa, canvas_posterior_dbsa')
+    .eq('patient_id', patientId)
+    .eq('is_deleted', false)
+    .order('assessment_date', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (error || !data) return null;
+
+  const a = data as {
+    assessment_date: string;
+    canvas_anterior_tbsa: string | null;
+    canvas_anterior_dbsa: string | null;
+    canvas_posterior_tbsa: string | null;
+    canvas_posterior_dbsa: string | null;
+  };
+
+  // Collect paths that exist
+  const paths: string[] = [];
+  const keys: ('anteriorTbsa' | 'anteriorDbsa' | 'posteriorTbsa' | 'posteriorDbsa')[] = [];
+  const pathMap: Record<string, string | null> = {
+    anteriorTbsa: a.canvas_anterior_tbsa,
+    anteriorDbsa: a.canvas_anterior_dbsa,
+    posteriorTbsa: a.canvas_posterior_tbsa,
+    posteriorDbsa: a.canvas_posterior_dbsa,
+  };
+
+  for (const [key, path] of Object.entries(pathMap)) {
+    if (path) {
+      paths.push(path);
+      keys.push(key as typeof keys[number]);
+    }
+  }
+
+  if (paths.length === 0) return null;
+
+  // Create signed URLs (valid for 1 hour)
+  const { data: signedData, error: signError } = await supabase.storage
+    .from('canvas-images')
+    .createSignedUrls(paths, 3600);
+
+  if (signError || !signedData) return null;
+
+  const result: Record<string, string | null> = {
+    anteriorTbsa: null,
+    anteriorDbsa: null,
+    posteriorTbsa: null,
+    posteriorDbsa: null,
+  };
+
+  for (let i = 0; i < keys.length; i++) {
+    result[keys[i]] = signedData[i]?.signedUrl ?? null;
+  }
+
+  return {
+    date: a.assessment_date,
+    anteriorTbsa: result.anteriorTbsa,
+    anteriorDbsa: result.anteriorDbsa,
+    posteriorTbsa: result.posteriorTbsa,
+    posteriorDbsa: result.posteriorDbsa,
+  };
+}
+
 export async function submitAssessment(payload: {
   patientId: string;
   tbsaPercent: number;

@@ -12,7 +12,7 @@ import { ViewToggle } from '@/components/canvas/ViewToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { PhotoEditor } from '@/components/photos/PhotoEditor';
-import { getPatient, getPatientAssessmentCount, submitAssessment } from '../../actions';
+import { getPatient, getPatientAssessmentCount, getPreviousAssessmentMaps, submitAssessment } from '../../actions';
 import { extractPhotoMetadata, type PhotoMetadata } from '@/lib/exif';
 import type { Database } from '@/lib/supabase/types';
 
@@ -76,6 +76,17 @@ export default function AssessmentPage() {
   const [scortenBicarb, setScorenBicarb] = useState<boolean | null>(null);
   const [scortenGlucose, setScorenGlucose] = useState<boolean | null>(null);
 
+  // Load previous body maps
+  const [showLoadPrompt, setShowLoadPrompt] = useState(false);
+  const [previousMaps, setPreviousMaps] = useState<{
+    date: string;
+    anteriorTbsa: string | null;
+    anteriorDbsa: string | null;
+    posteriorTbsa: string | null;
+    posteriorDbsa: string | null;
+  } | null>(null);
+  const [loadingMaps, setLoadingMaps] = useState(false);
+
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -90,9 +101,42 @@ export default function AssessmentPage() {
       // Check if this is the first assessment — SCORTEN required
       const count = await getPatientAssessmentCount(p.id);
       setIsFirstAssessment(count === 0);
+
+      // If there are previous assessments, fetch the most recent maps
+      if (count > 0) {
+        const maps = await getPreviousAssessmentMaps(p.id);
+        if (maps) {
+          setPreviousMaps(maps);
+          setShowLoadPrompt(true);
+        }
+      }
     }
     load();
   }, [studyId, router]);
+
+  async function handleLoadPreviousMaps() {
+    if (!engine || !previousMaps) return;
+    setLoadingMaps(true);
+    try {
+      const loads: Promise<void>[] = [];
+      if (previousMaps.anteriorTbsa) {
+        loads.push(engine.loadLayerImage('anterior', 'tbsa', previousMaps.anteriorTbsa));
+      }
+      if (previousMaps.anteriorDbsa) {
+        loads.push(engine.loadLayerImage('anterior', 'dbsa', previousMaps.anteriorDbsa));
+      }
+      if (previousMaps.posteriorTbsa) {
+        loads.push(engine.loadLayerImage('posterior', 'tbsa', previousMaps.posteriorTbsa));
+      }
+      if (previousMaps.posteriorDbsa) {
+        loads.push(engine.loadLayerImage('posterior', 'dbsa', previousMaps.posteriorDbsa));
+      }
+      await Promise.all(loads);
+    } finally {
+      setLoadingMaps(false);
+      setShowLoadPrompt(false);
+    }
+  }
 
   function handleAddPhoto() {
     photoInputRef.current?.click();
@@ -1024,6 +1068,30 @@ export default function AssessmentPage() {
               )}
             </div>
 
+            {/* Missing data reminders */}
+            {(photos.length === 0 || !notes.trim() || parsedAlbuminForDisplay === null || isNaN(parsedAlbuminForDisplay)) && (
+              <div className="space-y-1.5 mb-3">
+                {photos.length === 0 && (
+                  <div className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-800">
+                    <span className="text-base leading-none">&#9888;</span>
+                    <span>{t('assessment.missingPhotos')}</span>
+                  </div>
+                )}
+                {!notes.trim() && (
+                  <div className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-800">
+                    <span className="text-base leading-none">&#9888;</span>
+                    <span>{t('assessment.missingNotes')}</span>
+                  </div>
+                )}
+                {(parsedAlbuminForDisplay === null || isNaN(parsedAlbuminForDisplay)) && (
+                  <div className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-800">
+                    <span className="text-base leading-none">&#9888;</span>
+                    <span>{t('assessment.missingAlbumin')}</span>
+                  </div>
+                )}
+              </div>
+            )}
+
             <p className="text-[11px] text-[#999] mb-3">
               {t('assessment.confirmMessage')}
             </p>
@@ -1045,6 +1113,41 @@ export default function AssessmentPage() {
                 {isPending
                   ? t('assessment.submitting')
                   : t('assessment.confirm')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Load previous body maps prompt */}
+      {showLoadPrompt && previousMaps && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-sm w-full p-5">
+            <h3 className="text-sm font-bold text-[#1a1a1a] mb-2">
+              {t('assessment.loadPreviousTitle')}
+            </h3>
+            <p className="text-xs text-[#666] mb-4">
+              {t('assessment.loadPreviousMessage', {
+                date: new Date(previousMaps.date).toLocaleDateString(locale === 'fr' ? 'fr-FR' : 'en-GB'),
+              })}
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowLoadPrompt(false)}
+                disabled={loadingMaps}
+                className="flex-1 py-2 text-sm rounded-lg border border-[#d0d0c8] hover:bg-[#f0f0ea] transition-colors"
+              >
+                {t('assessment.loadPreviousNo')}
+              </button>
+              <button
+                onClick={handleLoadPreviousMaps}
+                disabled={loadingMaps}
+                className="flex-1 py-2 text-sm font-semibold rounded-lg bg-[#c95a8a] text-white
+                           hover:bg-[#b44d7a] disabled:opacity-50 transition-colors"
+              >
+                {loadingMaps
+                  ? t('assessment.loadPreviousLoading')
+                  : t('assessment.loadPreviousYes')}
               </button>
             </div>
           </div>

@@ -1,4 +1,5 @@
 {
+  "id": "/",
   "name": "SJS/TEN BSA Assessment",
   "short_name": "TEN BSA",
   "description": "Body Surface Area assessment tool for SJS/TEN clinical study",

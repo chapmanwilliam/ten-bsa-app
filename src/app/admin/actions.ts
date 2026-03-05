@@ -370,6 +370,26 @@ export async function getClinicianMfaStatuses(
   return results;
 }
 
+export async function resetClinicianPassword(clinicianId: string, newPassword: string) {
+  const currentUser = await getCurrentClinician();
+  if (!currentUser || !['admin', 'pi'].includes(currentUser.role)) {
+    return { error: 'Unauthorized' };
+  }
+
+  if (!newPassword || newPassword.length < 8) {
+    return { error: 'Password must be at least 8 characters.' };
+  }
+
+  const admin = createAdminClient();
+
+  const { error } = await admin.auth.admin.updateUserById(clinicianId, {
+    password: newPassword,
+  });
+
+  if (error) return { error: error.message };
+  return { success: true };
+}
+
 export async function resetClinicianMfa(clinicianId: string) {
   const currentUser = await getCurrentClinician();
   if (!currentUser || !['admin', 'pi'].includes(currentUser.role)) {

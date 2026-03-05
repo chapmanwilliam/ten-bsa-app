@@ -35,7 +35,32 @@
     "signIn": "Sign in",
     "signingIn": "Signing in…",
     "error": "Invalid email or password. Please try again.",
+    "lockedOut": "Too many failed attempts. Please wait {seconds}s before trying again.",
+    "forgotPassword": "Forgot password?",
     "footer": "Contact the study administrator if you need an account."
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "subtitle": "Enter your email to receive a password reset link.",
+    "emailLabel": "Email",
+    "submit": "Send Reset Link",
+    "sending": "Sending…",
+    "success": "If an account exists with that email, you will receive a password reset link shortly. Please check your inbox.",
+    "error": "Something went wrong. Please try again.",
+    "backToLogin": "← Back to login"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "mismatch": "Passwords do not match.",
+    "tooShort": "Password must be at least 8 characters.",
+    "submit": "Reset Password",
+    "resetting": "Resetting…",
+    "success": "Your password has been reset successfully. Redirecting to login…",
+    "error": "Failed to reset password. The link may have expired. Please try again.",
+    "redirecting": "Redirecting to login…",
+    "minLength": "Minimum 8 characters."
   },
   "nav": {
     "patients": "Patients",
@@ -81,6 +106,12 @@
       "france": "Lyon, France",
       "england": "London, England"
     },
+    "resetPassword": "Reset Password",
+    "resetPasswordTitle": "Reset Clinician Password",
+    "resetPasswordLabel": "New Password",
+    "resetPasswordHelp": "Minimum 8 characters. The clinician will use this to log in.",
+    "resetPasswordConfirm": "Reset Password",
+    "resetPasswordSuccess": "Password has been reset successfully.",
     "dialog": {
       "title": "Add New Clinician",
       "namePlaceholder": "Dr. Jane Smith",
@@ -149,6 +180,9 @@
     "confirmPhotos": "Photos",
     "confirmPhotoCount": "{count} photo(s) attached",
     "confirmMessage": "This will be saved to the patient record and cannot be edited.",
+    "missingPhotos": "No photographs attached",
+    "missingNotes": "No clinical notes entered",
+    "missingAlbumin": "No albumin level recorded",
     "confirm": "Submit",
     "cancel": "Cancel",
     "photoEditorCancel": "Cancel",
@@ -176,7 +210,12 @@
     "scortenNo": "No",
     "scortenScore": "SCORTEN",
     "scortenMortality": "Predicted mortality",
-    "confirmScorten": "SCORTEN"
+    "confirmScorten": "SCORTEN",
+    "loadPreviousTitle": "Load Previous Body Map",
+    "loadPreviousMessage": "Load the body map from the previous assessment ({date}) as a starting point? You can then add or erase areas.",
+    "loadPreviousYes": "Load",
+    "loadPreviousNo": "Start Fresh",
+    "loadPreviousLoading": "Loading…"
   },
   "patientDetail": {
     "patientInfo": "Patient Information",
@@ -222,6 +261,7 @@
     "verify": "Verify",
     "verifying": "Verifying…",
     "invalidCode": "Invalid code. Please try again.",
+    "lockedOut": "Too many failed attempts. Please wait {seconds}s before trying again.",
     "signOut": "Sign out",
     "enrollTitle": "Set Up Two-Factor Authentication",
     "enrollSubtitle": "Scan this QR code with your authenticator app (e.g. Google Authenticator, Authy).",
@@ -237,6 +277,25 @@
     "resetSuccess": "MFA reset successfully.",
     "copied": "Copied!",
     "copySecret": "Copy"
+  },
+  "demo": {
+    "tryIt": "Try the demo",
+    "badge": "Demo",
+    "subtitle": "This is a demo — no data is saved. Sign in to use the full clinical tool.",
+    "signIn": "Sign in",
+    "save": "Save",
+    "saveTitle": "Save Body Maps",
+    "patientId": "Patient ID",
+    "patientIdPlaceholder": "e.g. TEN-001",
+    "date": "Date",
+    "saveFile": "Save File",
+    "saving": "Saving…",
+    "saveSuccess": "Saved successfully.",
+    "saveError": "Could not save file. Please try again.",
+    "cancel": "Cancel",
+    "load": "Load",
+    "loadSuccess": "Body map loaded.",
+    "loadNoData": "No saved data found for this file."
   },
   "adminDashboard": {
     "title": "Admin Dashboard",

@@ -33,9 +33,15 @@ export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isLoginPage = pathname === '/login';
   const isMfaPage = pathname.startsWith('/mfa/');
+  const isPublicPage =
+    isLoginPage ||
+    pathname === '/forgot-password' ||
+    pathname === '/demo' ||
+    pathname.startsWith('/auth/callback');
+  const isResetPasswordPage = pathname === '/reset-password';
 
   // --- Unauthenticated users ---
-  if (!user && !isLoginPage) {
+  if (!user && !isPublicPage) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
@@ -47,6 +53,11 @@ export async function updateSession(request: NextRequest) {
     const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
     const currentLevel = aalData?.currentLevel ?? 'aal1';
     const nextLevel = aalData?.nextLevel ?? 'aal1';
+
+    // Allow reset-password page without MFA (recovery session)
+    if (isResetPasswordPage) {
+      return supabaseResponse;
+    }
 
     // User is fully authenticated (aal2) — redirect away from login/mfa pages
     if (currentLevel === 'aal2') {

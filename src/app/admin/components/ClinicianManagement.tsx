@@ -8,6 +8,7 @@ import {
   toggleClinicianActive,
   getClinicianMfaStatuses,
   resetClinicianMfa,
+  resetClinicianPassword,
   type ClinicianMfaStatus,
 } from '../actions';
 import type { Role, Site, Database } from '@/lib/supabase/types';
@@ -42,6 +43,10 @@ export function ClinicianManagement({
   const [formRole, setFormRole] = useState<Role>('clinician');
   const [formSite, setFormSite] = useState<Site>('england');
 
+  // Reset password dialog state
+  const [resetPwClinicianId, setResetPwClinicianId] = useState<string | null>(null);
+  const [resetPwValue, setResetPwValue] = useState('');
+
   // Load MFA statuses on mount and when clinicians change
   useEffect(() => {
     loadMfaStatuses(clinicians);
@@ -75,6 +80,21 @@ export function ClinicianManagement({
         setMessage({ type: 'success', text: t('mfa.resetSuccess') });
         await reload();
       }
+    });
+  }
+
+  function handleResetPassword() {
+    if (!resetPwClinicianId || !resetPwValue) return;
+
+    startTransition(async () => {
+      const result = await resetClinicianPassword(resetPwClinicianId, resetPwValue);
+      if (result.error) {
+        setMessage({ type: 'error', text: result.error });
+      } else {
+        setMessage({ type: 'success', text: t('admin.resetPasswordSuccess') });
+      }
+      setResetPwClinicianId(null);
+      setResetPwValue('');
     });
   }
 
@@ -148,29 +168,29 @@ export function ClinicianManagement({
           {t('admin.noClinicians')}
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-[#d0d0c8] overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="bg-white rounded-xl border border-[#d0d0c8] overflow-x-auto">
+          <table className="w-full text-sm min-w-[700px]">
             <thead>
               <tr className="bg-[#f8f8f5] border-b border-[#d0d0c8]">
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.name')}
                 </th>
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.email')}
                 </th>
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.role')}
                 </th>
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.site')}
                 </th>
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.status')}
                 </th>
-                <th className="text-left px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-left px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('mfa.mfaStatus')}
                 </th>
-                <th className="text-right px-4 py-2.5 font-semibold text-[#555]">
+                <th className="text-right px-3 py-2.5 font-semibold text-[#555] whitespace-nowrap">
                   {t('admin.actions')}
                 </th>
               </tr>
@@ -181,19 +201,19 @@ export function ClinicianManagement({
                   key={c.id}
                   className="border-b border-[#eee] last:border-0"
                 >
-                  <td className="px-4 py-2.5">{c.full_name}</td>
-                  <td className="px-4 py-2.5 text-[#666]">{c.email}</td>
-                  <td className="px-4 py-2.5">
-                    <span className="inline-block px-2 py-0.5 rounded-full text-xs bg-[#f0f0ea] text-[#555]">
+                  <td className="px-3 py-2.5 whitespace-nowrap">{c.full_name}</td>
+                  <td className="px-3 py-2.5 text-[#666] whitespace-nowrap text-xs">{c.email}</td>
+                  <td className="px-3 py-2.5">
+                    <span className="inline-block px-2 py-0.5 rounded-full text-xs bg-[#f0f0ea] text-[#555] whitespace-nowrap">
                       {t(`admin.roles.${c.role}`)}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-3 py-2.5 whitespace-nowrap text-xs">
                     {t(`admin.sites.${c.site}`)}
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-3 py-2.5">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-xs ${
+                      className={`inline-block px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${
                         c.is_active
                           ? 'bg-green-50 text-green-700'
                           : 'bg-red-50 text-red-600'
@@ -202,9 +222,9 @@ export function ClinicianManagement({
                       {c.is_active ? t('admin.active') : t('admin.inactive')}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5">
+                  <td className="px-3 py-2.5">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-xs ${
+                      className={`inline-block px-2 py-0.5 rounded-full text-xs whitespace-nowrap ${
                         mfaStatuses[c.id]
                           ? 'bg-green-50 text-green-700'
                           : 'bg-amber-50 text-amber-700'
@@ -215,7 +235,7 @@ export function ClinicianManagement({
                         : t('mfa.notEnrolled')}
                     </span>
                   </td>
-                  <td className="px-4 py-2.5 text-right">
+                  <td className="px-3 py-2.5 text-right whitespace-nowrap">
                     <div className="flex items-center justify-end gap-2">
                       {c.id !== currentUser.id && (
                         <>
@@ -229,6 +249,16 @@ export function ClinicianManagement({
                             {c.is_active
                               ? t('admin.deactivate')
                               : t('admin.activate')}
+                          </button>
+                          <button
+                            onClick={() => {
+                              setResetPwClinicianId(c.id);
+                              setResetPwValue('');
+                            }}
+                            disabled={isPending}
+                            className="text-xs text-blue-600 hover:text-blue-800 disabled:opacity-50"
+                          >
+                            {t('admin.resetPassword')}
                           </button>
                           {mfaStatuses[c.id] && (
                             <button
@@ -369,6 +399,58 @@ export function ClinicianManagement({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* Reset Password Dialog */}
+      {resetPwClinicianId && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-xl border border-[#d0d0c8] shadow-lg w-full max-w-sm p-6">
+            <h3 className="text-base font-semibold mb-4">
+              {t('admin.resetPasswordTitle')}
+            </h3>
+
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-[#555] mb-1">
+                  {t('admin.resetPasswordLabel')}
+                </label>
+                <input
+                  type="text"
+                  required
+                  minLength={8}
+                  value={resetPwValue}
+                  onChange={(e) => setResetPwValue(e.target.value)}
+                  className="w-full px-3 py-2 rounded-lg border border-[#d0d0c8] text-sm
+                             focus:outline-none focus:ring-2 focus:ring-[#c95a8a]/30 focus:border-[#c95a8a]"
+                />
+                <p className="text-[10px] text-[#999] mt-1">
+                  {t('admin.resetPasswordHelp')}
+                </p>
+              </div>
+
+              <div className="flex gap-2 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResetPwClinicianId(null);
+                    setResetPwValue('');
+                  }}
+                  className="flex-1 py-2 text-sm rounded-lg border border-[#d0d0c8] hover:bg-[#f0f0ea] transition-colors"
+                >
+                  {t('admin.dialog.cancel')}
+                </button>
+                <button
+                  type="button"
+                  disabled={isPending || resetPwValue.length < 8}
+                  onClick={handleResetPassword}
+                  className="flex-1 py-2 text-sm font-semibold rounded-lg bg-[#c95a8a] text-white
+                             hover:bg-[#b44d7a] disabled:opacity-50 transition-colors"
+                >
+                  {t('admin.resetPasswordConfirm')}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

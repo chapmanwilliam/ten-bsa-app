@@ -35,7 +35,32 @@
     "signIn": "Se connecter",
     "signingIn": "Connexion…",
     "error": "E-mail ou mot de passe invalide. Veuillez réessayer.",
+    "lockedOut": "Trop de tentatives échouées. Veuillez patienter {seconds}s avant de réessayer.",
+    "forgotPassword": "Mot de passe oublié ?",
     "footer": "Contactez l'administrateur de l'étude si vous avez besoin d'un compte."
+  },
+  "forgotPassword": {
+    "title": "Mot de passe oublié",
+    "subtitle": "Entrez votre e-mail pour recevoir un lien de réinitialisation.",
+    "emailLabel": "E-mail",
+    "submit": "Envoyer le lien",
+    "sending": "Envoi…",
+    "success": "Si un compte existe avec cet e-mail, vous recevrez un lien de réinitialisation. Veuillez vérifier votre boîte de réception.",
+    "error": "Une erreur est survenue. Veuillez réessayer.",
+    "backToLogin": "← Retour à la connexion"
+  },
+  "resetPassword": {
+    "title": "Réinitialiser le mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe",
+    "mismatch": "Les mots de passe ne correspondent pas.",
+    "tooShort": "Le mot de passe doit comporter au moins 8 caractères.",
+    "submit": "Réinitialiser",
+    "resetting": "Réinitialisation…",
+    "success": "Votre mot de passe a été réinitialisé avec succès. Redirection vers la connexion…",
+    "error": "Échec de la réinitialisation. Le lien a peut-être expiré. Veuillez réessayer.",
+    "redirecting": "Redirection vers la connexion…",
+    "minLength": "Minimum 8 caractères."
   },
   "nav": {
     "patients": "Patients",
@@ -81,6 +106,12 @@
       "france": "Lyon, France",
       "england": "Londres, Angleterre"
     },
+    "resetPassword": "Réinitialiser le mot de passe",
+    "resetPasswordTitle": "Réinitialiser le mot de passe du clinicien",
+    "resetPasswordLabel": "Nouveau mot de passe",
+    "resetPasswordHelp": "Minimum 8 caractères. Le clinicien utilisera ce mot de passe pour se connecter.",
+    "resetPasswordConfirm": "Réinitialiser",
+    "resetPasswordSuccess": "Le mot de passe a été réinitialisé avec succès.",
     "dialog": {
       "title": "Ajouter un nouveau clinicien",
       "namePlaceholder": "Dr. Marie Dupont",
@@ -149,6 +180,9 @@
     "confirmPhotos": "Photos",
     "confirmPhotoCount": "{count} photo(s) jointe(s)",
     "confirmMessage": "Cela sera enregistré dans le dossier du patient et ne pourra pas être modifié.",
+    "missingPhotos": "Aucune photographie jointe",
+    "missingNotes": "Aucune note clinique saisie",
+    "missingAlbumin": "Aucun taux d'albumine enregistré",
     "confirm": "Soumettre",
     "cancel": "Annuler",
     "photoEditorCancel": "Annuler",
@@ -176,7 +210,12 @@
     "scortenNo": "Non",
     "scortenScore": "SCORTEN",
     "scortenMortality": "Mortalité prédite",
-    "confirmScorten": "SCORTEN"
+    "confirmScorten": "SCORTEN",
+    "loadPreviousTitle": "Charger la carte précédente",
+    "loadPreviousMessage": "Charger la carte corporelle de l'évaluation précédente ({date}) comme point de départ ? Vous pourrez ensuite ajouter ou effacer des zones.",
+    "loadPreviousYes": "Charger",
+    "loadPreviousNo": "Recommencer",
+    "loadPreviousLoading": "Chargement…"
   },
   "patientDetail": {
     "patientInfo": "Informations patient",
@@ -222,6 +261,7 @@
     "verify": "Vérifier",
     "verifying": "Vérification…",
     "invalidCode": "Code invalide. Veuillez réessayer.",
+    "lockedOut": "Trop de tentatives échouées. Veuillez patienter {seconds}s avant de réessayer.",
     "signOut": "Déconnexion",
     "enrollTitle": "Configurer l'authentification à deux facteurs",
     "enrollSubtitle": "Scannez ce QR code avec votre application d'authentification (ex : Google Authenticator, Authy).",
@@ -237,6 +277,25 @@
     "resetSuccess": "MFA réinitialisée avec succès.",
     "copied": "Copié !",
     "copySecret": "Copier"
+  },
+  "demo": {
+    "tryIt": "Essayer la démo",
+    "badge": "Démo",
+    "subtitle": "Ceci est une démo — aucune donnée n'est enregistrée. Connectez-vous pour utiliser l'outil clinique complet.",
+    "signIn": "Se connecter",
+    "save": "Enregistrer",
+    "saveTitle": "Enregistrer les cartes corporelles",
+    "patientId": "ID Patient",
+    "patientIdPlaceholder": "ex. TEN-001",
+    "date": "Date",
+    "saveFile": "Enregistrer le fichier",
+    "saving": "Enregistrement…",
+    "saveSuccess": "Enregistré avec succès.",
+    "saveError": "Impossible d'enregistrer le fichier. Veuillez réessayer.",
+    "cancel": "Annuler",
+    "load": "Charger",
+    "loadSuccess": "Carte corporelle chargée.",
+    "loadNoData": "Aucune donnée enregistrée pour ce fichier."
   },
   "adminDashboard": {
     "title": "Tableau de bord admin",

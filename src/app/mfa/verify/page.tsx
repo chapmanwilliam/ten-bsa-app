@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { useRateLimit } from '@/hooks/useRateLimit';
 
 export default function MfaVerifyPage() {
   const t = useTranslations();
@@ -19,6 +20,7 @@ export default function MfaVerifyPage() {
   const [loading, setLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { isLockedOut, secondsRemaining, recordFailure, resetAttempts } = useRateLimit();
 
   useEffect(() => {
     initChallenge();
@@ -69,7 +71,7 @@ export default function MfaVerifyPage() {
 
   function handleVerify(e: React.FormEvent) {
     e.preventDefault();
-    if (!factorId || !challengeId || code.length !== 6) return;
+    if (!factorId || !challengeId || code.length !== 6 || isLockedOut) return;
 
     setError(null);
     startTransition(async () => {
@@ -80,6 +82,7 @@ export default function MfaVerifyPage() {
       });
 
       if (verifyError) {
+        recordFailure();
         setError(t('mfa.invalidCode'));
         setCode('');
         inputRef.current?.focus();
@@ -93,6 +96,7 @@ export default function MfaVerifyPage() {
       }
 
       // Success — session is now aal2
+      resetAttempts();
       router.push('/');
       router.refresh();
     });
@@ -161,15 +165,19 @@ export default function MfaVerifyPage() {
             />
           </div>
 
-          {error && (
+          {isLockedOut ? (
+            <div className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
+              {t('mfa.lockedOut', { seconds: secondsRemaining })}
+            </div>
+          ) : error ? (
             <div className="text-xs text-red-600 bg-red-50 rounded-lg px-3 py-2">
               {error}
             </div>
-          )}
+          ) : null}
 
           <button
             type="submit"
-            disabled={isPending || code.length !== 6}
+            disabled={isPending || code.length !== 6 || isLockedOut}
             className="w-full py-2.5 rounded-lg bg-[#c95a8a] text-white text-sm font-semibold
                        hover:bg-[#b44d7a] active:bg-[#a0426c] disabled:opacity-50
                        transition-colors cursor-pointer"
