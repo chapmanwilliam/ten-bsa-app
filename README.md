@@ -49,7 +49,7 @@ A standalone demo mode is available at `/demo` — it provides the full body-map
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/ten-bsa.git
+git clone https://github.com/chapmanwilliam/ten-bsa.git
 cd ten-bsa
 npm install
 ```
