@@ -8,6 +8,7 @@ interface SaveDialogProps {
   onClose: () => void;
   onSave: (patientId: string, date: string) => Promise<void>;
   defaultPatientId?: string;
+  missingFields?: string[];
 }
 
 function todayISO(): string {
@@ -18,7 +19,7 @@ function todayISO(): string {
   return `${yyyy}-${mm}-${dd}`;
 }
 
-export function SaveDialog({ open, onClose, onSave, defaultPatientId }: SaveDialogProps) {
+export function SaveDialog({ open, onClose, onSave, defaultPatientId, missingFields = [] }: SaveDialogProps) {
   const t = useTranslations('local');
   const [patientId, setPatientId] = useState('');
   const [date, setDate] = useState(todayISO);
@@ -86,6 +87,18 @@ export function SaveDialog({ open, onClose, onSave, defaultPatientId }: SaveDial
           className="w-full px-3 py-2 mb-4 rounded-lg border border-[#ccc] text-sm
                      focus:outline-none focus:ring-2 focus:ring-[#c95a8a]/40 focus:border-[#c95a8a]"
         />
+
+        {/* Missing data warnings */}
+        {missingFields.length > 0 && (
+          <div className="space-y-1.5 mb-3">
+            {missingFields.map((msg) => (
+              <div key={msg} className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-800">
+                <span className="text-base leading-none">&#9888;</span>
+                <span>{msg}</span>
+              </div>
+            ))}
+          </div>
+        )}
 
         {error && (
           <p className="text-xs text-red-600 mb-3">{error}</p>

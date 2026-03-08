@@ -396,6 +396,10 @@ export default function LocalPage() {
         onClose={() => setSaveDialogOpen(false)}
         onSave={handleSave}
         defaultPatientId={loadedPatientId}
+        missingFields={[
+          ...(!albumin.trim() ? [t('assessment.missingAlbumin')] : []),
+          ...(!crp.trim() ? [t('assessment.missingCrp')] : []),
+        ]}
       />
     </div>
   );
