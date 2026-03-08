@@ -1,9 +1,9 @@
 {
-  "id": "/demo",
-  "name": "TEN BSA Demo",
-  "short_name": "TEN Demo",
-  "description": "Demo mode — Body Surface Area assessment tool for SJS/TEN",
-  "start_url": "/demo",
+  "id": "/local",
+  "name": "TEN BSA Local",
+  "short_name": "TEN Local",
+  "description": "Local mode — Body Surface Area assessment tool for SJS/TEN",
+  "start_url": "/local",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -11,17 +11,17 @@
   "theme_color": "#2563eb",
   "icons": [
     {
-      "src": "/icons/icon-demo-192.png",
+      "src": "/icons/icon-local-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon-demo-512.png",
+      "src": "/icons/icon-local-512.png",
       "sizes": "512x512",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon-demo-512.png",
+      "src": "/icons/icon-local-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

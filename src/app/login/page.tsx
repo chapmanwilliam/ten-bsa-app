@@ -153,10 +153,10 @@ export default function LoginPage() {
         <div className="text-center mt-3 space-y-1.5">
           <div>
             <Link
-              href="/demo"
+              href="/local"
               className="text-[11px] text-[#c95a8a] hover:text-[#b44d7a] font-medium transition-colors"
             >
-              {t('demo.tryIt')} →
+              {t('local.tryIt')} →
             </Link>
           </div>
           <div>

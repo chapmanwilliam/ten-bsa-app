@@ -16,6 +16,15 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '20mb',
     },
   },
+  async redirects() {
+    return [
+      {
+        source: '/demo',
+        destination: '/local',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withSerwist(withNextIntl(nextConfig));

@@ -286,10 +286,10 @@
     "copied": "Copiato!",
     "copySecret": "Copia"
   },
-  "demo": {
-    "tryIt": "Prova la demo",
-    "badge": "Demo",
-    "subtitle": "Questa è una demo — nessun dato viene salvato. Accedi per utilizzare lo strumento clinico completo.",
+  "local": {
+    "tryIt": "Modalità locale",
+    "badge": "Locale",
+    "subtitle": "Modalità locale — i dati vengono salvati solo su questo dispositivo. Accedi per utilizzare lo strumento clinico completo.",
     "signIn": "Accedi",
     "save": "Salva",
     "saveTitle": "Salva mappe corporee",

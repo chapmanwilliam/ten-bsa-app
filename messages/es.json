@@ -286,10 +286,10 @@
     "copied": "¡Copiado!",
     "copySecret": "Copiar"
   },
-  "demo": {
-    "tryIt": "Probar la demo",
-    "badge": "Demo",
-    "subtitle": "Esto es una demo — no se guardan datos. Inicie sesión para usar la herramienta clínica completa.",
+  "local": {
+    "tryIt": "Modo local",
+    "badge": "Local",
+    "subtitle": "Modo local — los datos se guardan solo en este dispositivo. Inicie sesión para usar la herramienta clínica completa.",
     "signIn": "Iniciar sesión",
     "save": "Guardar",
     "saveTitle": "Guardar mapas corporales",

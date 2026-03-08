@@ -286,10 +286,10 @@
     "copied": "Copié !",
     "copySecret": "Copier"
   },
-  "demo": {
-    "tryIt": "Essayer la démo",
-    "badge": "Démo",
-    "subtitle": "Ceci est une démo — aucune donnée n'est enregistrée. Connectez-vous pour utiliser l'outil clinique complet.",
+  "local": {
+    "tryIt": "Mode local",
+    "badge": "Local",
+    "subtitle": "Mode local — les données sont enregistrées sur cet appareil uniquement. Connectez-vous pour utiliser l'outil clinique complet.",
     "signIn": "Se connecter",
     "save": "Enregistrer",
     "saveTitle": "Enregistrer les cartes corporelles",

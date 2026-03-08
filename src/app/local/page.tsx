@@ -12,7 +12,7 @@ import { ViewToggle } from '@/components/canvas/ViewToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { SaveDialog } from '@/components/ui/SaveDialog';
 
-export default function DemoPage() {
+export default function LocalPage() {
   const t = useTranslations();
 
   const {
@@ -31,6 +31,7 @@ export default function DemoPage() {
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadedPatientId, setLoadedPatientId] = useState('');
   const [loadMessage, setLoadMessage] = useState('');
+  const [albumin, setAlbumin] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-dismiss toast
@@ -45,14 +46,16 @@ export default function DemoPage() {
 
     // Stash raw layer data in localStorage for later Load
     try {
-      const key = `ten-demo:${patientId}:${date}`;
+      const key = `ten-local:${patientId}:${date}`;
       const layers: Record<string, string | null> = {};
       for (const view of ['anterior', 'posterior'] as const) {
         for (const layer of ['tbsa', 'dbsa'] as const) {
           layers[`${view}-${layer}`] = engine.exportLayerAsPNG(`draw-${layer}-${view}`);
         }
       }
-      localStorage.setItem(key, JSON.stringify(layers));
+      // Also stash albumin value
+      const stash: Record<string, any> = { layers, albumin: albumin || null };
+      localStorage.setItem(key, JSON.stringify(stash));
     } catch {
       // localStorage full or unavailable — continue with file save
     }
@@ -66,7 +69,7 @@ export default function DemoPage() {
     if ('showSaveFilePicker' in window) {
       try {
         const handle = await (window as any).showSaveFilePicker({
-          id: 'ten-demo-files',
+          id: 'ten-local-files',
           suggestedName: filename,
           types: [{ description: 'PNG Image', accept: { 'image/png': ['.png'] } }],
         });
@@ -102,7 +105,7 @@ export default function DemoPage() {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-  }, [engine]);
+  }, [engine, albumin]);
 
   const processLoadedFile = useCallback(async (file: File) => {
     if (!engine) return;
@@ -111,22 +114,24 @@ export default function DemoPage() {
     const basename = file.name.replace(/\.png$/i, '');
     const spaceIdx = basename.indexOf(' ');
     if (spaceIdx < 1) {
-      setLoadMessage(t('demo.loadNoData'));
+      setLoadMessage(t('local.loadNoData'));
       return;
     }
     const date = basename.slice(0, spaceIdx);
     const patientId = basename.slice(spaceIdx + 1);
 
     // Look up localStorage
-    const key = `ten-demo:${patientId}:${date}`;
+    const key = `ten-local:${patientId}:${date}`;
     const raw = localStorage.getItem(key);
     if (!raw) {
-      setLoadMessage(t('demo.loadNoData'));
+      setLoadMessage(t('local.loadNoData'));
       return;
     }
 
     try {
-      const layers = JSON.parse(raw) as Record<string, string | null>;
+      const parsed = JSON.parse(raw);
+      // Support both old format (direct layers object) and new format (with albumin)
+      const layers = (parsed.layers ?? parsed) as Record<string, string | null>;
       for (const view of ['anterior', 'posterior'] as const) {
         for (const layer of ['tbsa', 'dbsa'] as const) {
           const dataUrl = layers[`${view}-${layer}`];
@@ -135,10 +140,14 @@ export default function DemoPage() {
           }
         }
       }
+      // Restore albumin if present
+      if (parsed.albumin) {
+        setAlbumin(parsed.albumin);
+      }
       setLoadedPatientId(patientId);
-      setLoadMessage(t('demo.loadSuccess'));
+      setLoadMessage(t('local.loadSuccess'));
     } catch {
-      setLoadMessage(t('demo.loadNoData'));
+      setLoadMessage(t('local.loadNoData'));
     }
   }, [engine, t]);
 
@@ -147,7 +156,7 @@ export default function DemoPage() {
     if ('showOpenFilePicker' in window) {
       try {
         const [handle] = await (window as any).showOpenFilePicker({
-          id: 'ten-demo-files',
+          id: 'ten-local-files',
           types: [{ description: 'PNG Image', accept: { 'image/png': ['.png'] } }],
         });
         const file: File = await handle.getFile();
@@ -178,7 +187,7 @@ export default function DemoPage() {
             href="/login"
             className="text-xs text-[#888] hover:text-[#c95a8a] transition-colors"
           >
-            {t('demo.signIn')} →
+            {t('local.signIn')} →
           </Link>
         </div>
         <div className="flex gap-3">
@@ -221,18 +230,18 @@ export default function DemoPage() {
             onClick={handleLoadClick}
             className="px-2.5 py-1.5 rounded-md border border-[#b0b0a8] bg-white text-[#555] text-[11px] font-semibold cursor-pointer active:bg-[#ddd]"
           >
-            &#x1F4C2; {t('demo.load')}
+            &#x1F4C2; {t('local.load')}
           </button>
           <button
             onClick={() => setSaveDialogOpen(true)}
             className="px-2.5 py-1.5 rounded-md border border-[#c95a8a] bg-[#c95a8a] text-white text-[11px] font-semibold cursor-pointer
                        hover:bg-[#b44d7a] active:bg-[#a0426c] transition-colors"
           >
-            &#x1F4BE; {t('demo.save')}
+            &#x1F4BE; {t('local.save')}
           </button>
         </div>
         <span className="text-[10px] text-[#999] font-medium uppercase tracking-wider">
-          {t('demo.badge')}
+          {t('local.badge')}
         </span>
       </div>
 
@@ -282,6 +291,33 @@ export default function DemoPage() {
         onBrushChange={setBrushRadius}
       />
 
+      {/* Albumin input */}
+      <div className="px-4 py-3 bg-white border-t border-[#b0b0a8]">
+        <div className="flex items-center gap-2">
+          <label htmlFor="albumin" className="text-[11px] font-semibold text-[#555]">
+            {t('assessment.albumin')}
+          </label>
+          <div className="flex items-center gap-1">
+            <input
+              id="albumin"
+              type="number"
+              inputMode="decimal"
+              step="0.1"
+              min="0"
+              max="100"
+              value={albumin}
+              onChange={(e) => setAlbumin(e.target.value)}
+              placeholder={t('assessment.albuminPlaceholder')}
+              className="w-20 px-2 py-1.5 rounded-md border border-[#d0d0c8] text-sm text-center
+                         focus:outline-none focus:ring-2 focus:ring-[#c95a8a]/30 focus:border-[#c95a8a]
+                         placeholder:text-[#aaa]"
+            />
+            <span className="text-[11px] text-[#888]">{t('assessment.albuminUnit')}</span>
+          </div>
+        </div>
+        <p className="text-[10px] text-[#999] mt-1">{t('assessment.albuminHelp')}</p>
+      </div>
+
       {/* Info bar */}
       <div className="px-4 py-2.5 text-[10px] text-[#555] leading-relaxed bg-white border-t border-[#b0b0a8]">
         <strong className="text-[#1a1a1a]">{t('tools.tbsa')}</strong> ={' '}
@@ -290,17 +326,17 @@ export default function DemoPage() {
         {t('info.dbsa')}
       </div>
 
-      {/* Demo footer */}
+      {/* Local footer */}
       <div className="px-4 py-4 text-center">
         <p className="text-[11px] text-[#888] mb-2">
-          {t('demo.subtitle')}
+          {t('local.subtitle')}
         </p>
         <Link
           href="/login"
           className="inline-block px-5 py-2 rounded-lg bg-[#c95a8a] text-white text-xs font-semibold
                      hover:bg-[#b44d7a] active:bg-[#a0426c] transition-colors"
         >
-          {t('demo.signIn')}
+          {t('local.signIn')}
         </Link>
       </div>
 

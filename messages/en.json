@@ -286,10 +286,10 @@
     "copied": "Copied!",
     "copySecret": "Copy"
   },
-  "demo": {
-    "tryIt": "Try the demo",
-    "badge": "Demo",
-    "subtitle": "This is a demo — no data is saved. Sign in to use the full clinical tool.",
+  "local": {
+    "tryIt": "Try local mode",
+    "badge": "Local",
+    "subtitle": "This is local mode — data is saved on this device only. Sign in to use the full clinical tool.",
     "signIn": "Sign in",
     "save": "Save",
     "saveTitle": "Save Body Maps",

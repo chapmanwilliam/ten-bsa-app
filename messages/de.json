@@ -286,10 +286,10 @@
     "copied": "Kopiert!",
     "copySecret": "Kopieren"
   },
-  "demo": {
-    "tryIt": "Demo ausprobieren",
-    "badge": "Demo",
-    "subtitle": "Dies ist eine Demo — es werden keine Daten gespeichert. Melden Sie sich an, um das vollständige klinische Tool zu nutzen.",
+  "local": {
+    "tryIt": "Lokaler Modus",
+    "badge": "Lokal",
+    "subtitle": "Lokaler Modus — Daten werden nur auf diesem Gerät gespeichert. Melden Sie sich an, um das vollständige klinische Tool zu nutzen.",
     "signIn": "Anmelden",
     "save": "Speichern",
     "saveTitle": "Körperkarten speichern",

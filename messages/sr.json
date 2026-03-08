@@ -286,10 +286,10 @@
     "copied": "Kopirano!",
     "copySecret": "Kopiraj"
   },
-  "demo": {
-    "tryIt": "Isprobajte demo",
-    "badge": "Demo",
-    "subtitle": "Ovo je demo — podaci se ne čuvaju. Prijavite se za korišćenje potpunog kliničkog alata.",
+  "local": {
+    "tryIt": "Lokalni režim",
+    "badge": "Lokalno",
+    "subtitle": "Lokalni režim — podaci se čuvaju samo na ovom uređaju. Prijavite se za korišćenje potpunog kliničkog alata.",
     "signIn": "Prijavi se",
     "save": "Sačuvaj",
     "saveTitle": "Sačuvaj mape tela",

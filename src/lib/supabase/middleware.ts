@@ -36,7 +36,7 @@ export async function updateSession(request: NextRequest) {
   const isPublicPage =
     isLoginPage ||
     pathname === '/forgot-password' ||
-    pathname === '/demo' ||
+    pathname === '/local' ||
     pathname === '/setup' ||
     pathname.startsWith('/auth/callback');
   const isResetPasswordPage = pathname === '/reset-password';
