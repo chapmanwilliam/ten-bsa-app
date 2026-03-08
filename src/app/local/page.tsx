@@ -31,15 +31,22 @@ export default function LocalPage() {
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadedPatientId, setLoadedPatientId] = useState('');
   const [loadMessage, setLoadMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState('');
   const [albumin, setAlbumin] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Auto-dismiss toast
+  // Auto-dismiss toasts
   useEffect(() => {
     if (!loadMessage) return;
     const timer = setTimeout(() => setLoadMessage(''), 3000);
     return () => clearTimeout(timer);
   }, [loadMessage]);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToastMessage(''), 4000);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
 
   const handleSave = useCallback(async (patientId: string, date: string) => {
     if (!engine) throw new Error('Engine not ready');
@@ -106,7 +113,8 @@ export default function LocalPage() {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 5000);
-  }, [engine, albumin]);
+    setToastMessage(`${t('local.saveSuccess')} — ${filename}`);
+  }, [engine, albumin, t]);
 
   const processLoadedFile = useCallback(async (file: File) => {
     if (!engine) return;
@@ -350,10 +358,10 @@ export default function LocalPage() {
         onChange={handleFileSelected}
       />
 
-      {/* Toast notification */}
-      {loadMessage && (
+      {/* Toast notifications */}
+      {(loadMessage || toastMessage) && (
         <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-[110] px-4 py-2 rounded-lg bg-[#1a1a1a]/85 text-white text-xs font-medium shadow-lg">
-          {loadMessage}
+          {loadMessage || toastMessage}
         </div>
       )}
 
