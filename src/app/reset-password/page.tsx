@@ -3,8 +3,8 @@
 import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import { createClient } from '@/lib/supabase/client';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
+import { resetPassword } from './actions';
 
 export default function ResetPasswordPage() {
   const t = useTranslations();
@@ -30,19 +30,13 @@ export default function ResetPasswordPage() {
     }
 
     startTransition(async () => {
-      const supabase = createClient();
+      const result = await resetPassword(newPassword);
 
-      const { error: updateError } = await supabase.auth.updateUser({
-        password: newPassword,
-      });
-
-      if (updateError) {
-        setError(t('resetPassword.error'));
+      if (result.error) {
+        setError(result.error);
         return;
       }
 
-      // Sign out so user logs in fresh with the new password
-      await supabase.auth.signOut();
       setSuccess(true);
 
       // Redirect to login after a short delay
