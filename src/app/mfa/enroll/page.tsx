@@ -102,8 +102,7 @@ export default function MfaEnrollPage() {
 
       // Success — MFA is now enrolled and session is aal2
       await setLocaleForClinicianSite();
-      router.push('/');
-      router.refresh();
+      window.location.href = '/';
     });
   }
 

@@ -99,8 +99,7 @@ export default function MfaVerifyPage() {
       // Success — session is now aal2
       resetAttempts();
       await setLocaleForClinicianSite();
-      router.push('/');
-      router.refresh();
+      window.location.href = '/';
     });
   }
 
