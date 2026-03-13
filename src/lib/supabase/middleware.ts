@@ -62,8 +62,10 @@ export async function updateSession(request: NextRequest) {
     }
 
     // User is fully authenticated (aal2) — redirect away from login/mfa pages
+    // Only redirect GET (navigation) requests — POST requests are server actions
+    // that must complete before the page redirects (e.g. setLocaleForClinicianSite)
     if (currentLevel === 'aal2') {
-      if (isLoginPage || isMfaPage) {
+      if ((isLoginPage || isMfaPage) && request.method === 'GET') {
         const url = request.nextUrl.clone();
         url.pathname = '/';
         return NextResponse.redirect(url);
