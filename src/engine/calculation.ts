@@ -41,7 +41,7 @@ export function calculateRegionCoverage(
     for (let y = region.y; y < region.y + region.height && y < canvasHeight; y++) {
       for (let x = region.x; x < region.x + region.width && x < canvasWidth; x++) {
         const i = (y * canvasWidth + x) * 4;
-        if (maskData[i] > 200) {
+        if (maskData[i + 3] > 200) {
           count++;
           if (drawData[i + 3] > 25) {
             filled++;

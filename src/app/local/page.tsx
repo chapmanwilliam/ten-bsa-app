@@ -23,6 +23,7 @@ export default function LocalPage() {
     setBrushRadius,
     undo,
     clearAll,
+    clearView,
     currentTool,
     brushRadius,
   } = useDrawingEngine();
@@ -234,7 +235,7 @@ export default function LocalPage() {
             &#x21A9; {t('actions.undo')}
           </button>
           <button
-            onClick={clearAll}
+            onClick={() => clearView(activeView)}
             className="px-2.5 py-1.5 rounded-md border border-[#b0b0a8] bg-white text-[#555] text-[11px] font-semibold cursor-pointer active:bg-[#ddd]"
           >
             {t('actions.clear')}

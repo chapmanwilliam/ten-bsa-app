@@ -164,6 +164,21 @@ export class DrawingEngine {
   }
 
   /**
+   * Clear drawing on a single view.
+   */
+  clearView(view: View): void {
+    if (this.ctxs[`draw-tbsa-${view}`]) {
+      this.ctxs[`draw-tbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+    if (this.ctxs[`draw-dbsa-${view}`]) {
+      this.ctxs[`draw-dbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    }
+    // Remove undo entries for this view
+    this.undoStack = this.undoStack.filter((e) => e.view !== view);
+    this.recalc();
+  }
+
+  /**
    * Clear all drawing on both views.
    */
   clearAll(): void {

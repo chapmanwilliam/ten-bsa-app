@@ -17,6 +17,7 @@ interface UseDrawingEngineReturn {
   setBrushRadius: (radius: number) => void;
   undo: () => void;
   clearAll: () => void;
+  clearView: (view: View) => void;
   currentTool: Tool;
   brushRadius: number;
 }
@@ -61,7 +62,7 @@ export function useDrawingEngine(): UseDrawingEngineReturn {
       engine.registerCanvases(view, bodyRef, tbsaRef, dbsaRef, interactRef);
 
       const bodyImgSrc = view === 'anterior' ? '/body-front.png' : '/body-back.png';
-      const maskImgSrc = view === 'anterior' ? '/mask-front.png' : '/mask-back.png';
+      const maskImgSrc = view === 'anterior' ? '/mask-front.png?v=2' : '/mask-back.png?v=2';
       await engine.loadImages(view, bodyImgSrc, maskImgSrc);
     },
     [engine],
@@ -89,6 +90,10 @@ export function useDrawingEngine(): UseDrawingEngineReturn {
     engine?.clearAll();
   }, [engine]);
 
+  const clearView = useCallback((view: View) => {
+    engine?.clearView(view);
+  }, [engine]);
+
   return {
     engine,
     calculation,
@@ -97,6 +102,7 @@ export function useDrawingEngine(): UseDrawingEngineReturn {
     setBrushRadius,
     undo,
     clearAll,
+    clearView,
     currentTool,
     brushRadius,
   };
