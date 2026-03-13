@@ -3,8 +3,8 @@
     "title": "SJS/TEN BSA Assessment"
   },
   "tools": {
-    "tbsa": "TBSA",
-    "dbsa": "DBSA",
+    "tbsa": "T-BSA",
+    "dbsa": "D-BSA",
     "eraser": "Eraser"
   },
   "actions": {
@@ -243,8 +243,8 @@
     "newAssessment": "New Assessment",
     "assessedBy": "Assessed by",
     "date": "Date",
-    "tbsa": "TBSA",
-    "dbsa": "DBSA",
+    "tbsa": "T-BSA",
+    "dbsa": "D-BSA",
     "albumin": "Albumin",
     "crp": "CRP",
     "photos": "Clinical Photographs",
