@@ -20,8 +20,8 @@
     "label": "Brush"
   },
   "info": {
-    "tbsa": "all involved skin incl. erythema (pink).",
-    "dbsa": "blisters, erosions, Nikolsky+, necrotic — erythema excluded (grey)."
+    "tbsa": "T-BSA = Total Body Surface Area\n\nAll involved skin including erythema",
+    "dbsa": "D-BSA = Degraded Body Surface Area\n\nBlisters, erosions, Nikolsky+, necrotic — erythema excluded"
   },
   "language": {
     "toggle": "FR",

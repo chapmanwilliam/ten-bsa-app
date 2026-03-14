@@ -20,8 +20,8 @@
     "label": "Četkica"
   },
   "info": {
-    "tbsa": "sva zahvaćena koža uključujući eritem (roze).",
-    "dbsa": "bule, erozije, Nikolsky+, nekroza — eritem isključen (sivo)."
+    "tbsa": "T-BSA = Ukupna Površina Tela\n\nSva zahvaćena koža uključujući eritem",
+    "dbsa": "D-BSA = Degradirana Površina Tela\n\nBule, erozije, Nikolsky+, nekroza — eritem isključen"
   },
   "language": {
     "toggle": "EN",

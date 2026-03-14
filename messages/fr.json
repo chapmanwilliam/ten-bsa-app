@@ -20,8 +20,8 @@
     "label": "Pinceau"
   },
   "info": {
-    "tbsa": "toute peau atteinte, y compris l'érythème (rose).",
-    "dbsa": "bulles, érosions, Nikolsky+, nécrose — érythème exclu (gris)."
+    "tbsa": "T-BSA = Surface Corporelle Totale\n\nToute peau atteinte, y compris l'érythème",
+    "dbsa": "D-BSA = Surface Corporelle Dégradée\n\nBulles, érosions, Nikolsky+, nécrose — érythème exclu"
   },
   "language": {
     "toggle": "EN",

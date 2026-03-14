@@ -24,8 +24,8 @@ export function InfoTooltip({ text, color, position = 'below' }: InfoTooltipProp
   }, [open]);
 
   const popoverClass = position === 'right'
-    ? 'absolute left-full top-1/2 -translate-y-1/2 ml-2 z-[100] w-52 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg'
-    : 'absolute right-0 top-full mt-1 z-[100] w-52 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg';
+    ? 'absolute left-full top-1/2 -translate-y-1/2 ml-2 z-[100] w-80 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg whitespace-pre-line'
+    : 'absolute right-0 top-full mt-1 z-[100] w-80 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg whitespace-pre-line';
 
   return (
     <div ref={ref} className="relative inline-flex items-center">

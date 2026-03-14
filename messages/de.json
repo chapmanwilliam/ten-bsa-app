@@ -20,8 +20,8 @@
     "label": "Pinsel"
   },
   "info": {
-    "tbsa": "gesamte betroffene Haut inkl. Erythem (rosa).",
-    "dbsa": "Blasen, Erosionen, Nikolsky+, nekrotisch — Erythem ausgenommen (grau)."
+    "tbsa": "T-BSA = Gesamte Körperoberfläche\n\nGesamte betroffene Haut einschließlich Erythem",
+    "dbsa": "D-BSA = Degradierte Körperoberfläche\n\nBlasen, Erosionen, Nikolsky+, nekrotisch — Erythem ausgenommen"
   },
   "language": {
     "toggle": "EN",

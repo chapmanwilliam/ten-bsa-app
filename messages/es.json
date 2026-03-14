@@ -20,8 +20,8 @@
     "label": "Pincel"
   },
   "info": {
-    "tbsa": "toda la piel afectada, incluyendo eritema (rosa).",
-    "dbsa": "ampollas, erosiones, Nikolsky+, necrosis — eritema excluido (gris)."
+    "tbsa": "T-BSA = Superficie Corporal Total\n\nToda la piel afectada incluyendo eritema",
+    "dbsa": "D-BSA = Superficie Corporal Degradada\n\nAmpollas, erosiones, Nikolsky+, necrosis — eritema excluido"
   },
   "language": {
     "toggle": "EN",

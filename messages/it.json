@@ -20,8 +20,8 @@
     "label": "Pennello"
   },
   "info": {
-    "tbsa": "tutta la cute coinvolta, incluso l'eritema (rosa).",
-    "dbsa": "bolle, erosioni, Nikolsky+, necrosi — eritema escluso (grigio)."
+    "tbsa": "T-BSA = Superficie Corporea Totale\n\nTutta la cute coinvolta, incluso l'eritema",
+    "dbsa": "D-BSA = Superficie Corporea Degradata\n\nBolle, erosioni, Nikolsky+, necrosi — eritema escluso"
   },
   "language": {
     "toggle": "EN",
