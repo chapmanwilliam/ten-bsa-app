@@ -264,68 +264,71 @@ export default function LocalPage() {
       </div>
 
       {/* Main drawing area */}
-      <div className="relative flex justify-center py-2 pl-[60px] sm:pl-0">
+      <div className="relative py-2">
         {/* Side tools */}
         <div className="absolute left-2 top-12 z-20">
           <CanvasToolbar currentTool={currentTool} onToolChange={setTool} />
         </div>
 
-        {/* View toggle + Brush controls */}
-        <div className="absolute top-1.5 left-1/2 -translate-x-1/2 z-20 w-[68vw] max-w-[320px]">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setActiveView('anterior')}
-              className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
-                activeView === 'anterior'
-                  ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                  : 'bg-white text-[#555] border-[#b0b0a8]'
-              }`}
-            >
-              {t('views.front')}
-            </button>
-            <BrushControls
-              brushRadius={brushRadius}
-              currentTool={currentTool}
-              onBrushChange={setBrushRadius}
-              compact
-            />
-            <button
-              onClick={() => setActiveView('posterior')}
-              className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
-                activeView === 'posterior'
-                  ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
-                  : 'bg-white text-[#555] border-[#b0b0a8]'
-              }`}
-            >
-              {t('views.back')}
-            </button>
+        {/* Centred column for toggle + canvas */}
+        <div className="flex flex-col items-center pl-[60px] sm:pl-0">
+          {/* View toggle + Brush controls */}
+          <div className="w-[68vw] max-w-[320px] z-20 mb-1.5">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setActiveView('anterior')}
+                className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
+                  activeView === 'anterior'
+                    ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
+                    : 'bg-white text-[#555] border-[#b0b0a8]'
+                }`}
+              >
+                {t('views.front')}
+              </button>
+              <BrushControls
+                brushRadius={brushRadius}
+                currentTool={currentTool}
+                onBrushChange={setBrushRadius}
+                compact
+              />
+              <button
+                onClick={() => setActiveView('posterior')}
+                className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
+                  activeView === 'posterior'
+                    ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
+                    : 'bg-white text-[#555] border-[#b0b0a8]'
+                }`}
+              >
+                {t('views.back')}
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Canvas — anterior */}
-        <div
-          className={`w-[68vw] max-w-[320px] pt-[42px] pb-2 ${
-            activeView !== 'anterior' ? 'hidden' : ''
-          }`}
-        >
-          <BodyCanvas
-            view="anterior"
-            engine={engine}
-            onRegister={registerCanvasRefs}
-          />
-        </div>
+          {/* Canvas — anterior */}
+          <div
+            className={`w-[68vw] max-w-[320px] pb-2 ${
+              activeView !== 'anterior' ? 'hidden' : ''
+            }`}
+          >
+            <BodyCanvas
+              view="anterior"
+              engine={engine}
+              onRegister={registerCanvasRefs}
+            />
+          </div>
 
-        {/* Canvas — posterior */}
-        <div
-          className={`w-[68vw] max-w-[320px] pt-[42px] pb-2 ${
-            activeView !== 'posterior' ? 'hidden' : ''
-          }`}
-        >
-          <BodyCanvas
-            view="posterior"
-            engine={engine}
-            onRegister={registerCanvasRefs}
-          />
+          {/* Canvas — posterior */}
+          <div
+            className={`w-[68vw] max-w-[320px] pb-2 ${
+              activeView !== 'posterior' ? 'hidden' : ''
+            }`}
+          >
+            <BodyCanvas
+              view="posterior"
+              engine={engine}
+              onRegister={registerCanvasRefs}
+            />
+          </div>
         </div>
       </div>
 
