@@ -11,6 +11,7 @@ import { BrushControls } from '@/components/canvas/BrushControls';
 import { ViewToggle } from '@/components/canvas/ViewToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { InfoTooltip } from '@/components/ui/InfoTooltip';
 import { PhotoEditor } from '@/components/photos/PhotoEditor';
 import { getPatient, getPatientAssessmentCount, getPreviousAssessmentMaps, submitAssessment } from '../../actions';
 import { getCurrentClinician } from '@/app/admin/actions';
@@ -513,22 +514,24 @@ export default function AssessmentPage() {
             {patient.study_id} ({patient.initials})
           </span>
         </div>
-        <div className="flex gap-3">
-          <div className="flex items-baseline gap-1.5">
+        <div className="flex gap-3 items-center">
+          <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#c95a8a]">
               {t('tools.tbsa')}
             </span>
             <span className="font-mono text-[22px] font-medium text-[#c95a8a]">
               {calculation.tbsa.toFixed(1)}%
             </span>
+            <InfoTooltip text={t('info.tbsa')} color="#c95a8a" />
           </div>
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#636e72]">
               {t('tools.dbsa')}
             </span>
             <span className="font-mono text-[22px] font-medium text-[#636e72]">
               {calculation.dbsa.toFixed(1)}%
             </span>
+            <InfoTooltip text={t('info.dbsa')} color="#636e72" />
           </div>
         </div>
       </div>
