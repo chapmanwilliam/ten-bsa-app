@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { Tool } from '@/engine';
+import { InfoTooltip } from '@/components/ui/InfoTooltip';
 
 interface CanvasToolbarProps {
   currentTool: Tool;
@@ -38,15 +39,21 @@ export function CanvasToolbar({ currentTool, onToolChange }: CanvasToolbarProps)
             : 'border-[#b0b0a8] bg-white text-[#555]';
         }
 
+        const infoColor = tool.id === 'tbsa' ? '#c95a8a' : tool.id === 'dbsa' ? '#636e72' : null;
+
         return (
-          <button
-            key={tool.id}
-            className={className}
-            onClick={() => onToolChange(tool.id)}
-          >
-            <span className="text-lg block mb-0.5">{tool.icon}</span>
-            {t(tool.tKey)}
-          </button>
+          <div key={tool.id} className="flex items-center gap-1.5">
+            <button
+              className={className}
+              onClick={() => onToolChange(tool.id)}
+            >
+              <span className="text-lg block mb-0.5">{tool.icon}</span>
+              {t(tool.tKey)}
+            </button>
+            {infoColor && (
+              <InfoTooltip text={t(`info.${tool.id}`)} color={infoColor} position="right" />
+            )}
+          </div>
         );
       })}
     </div>

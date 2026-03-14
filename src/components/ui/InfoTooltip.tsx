@@ -5,9 +5,10 @@ import { useState, useRef, useEffect } from 'react';
 interface InfoTooltipProps {
   text: string;
   color: string;
+  position?: 'below' | 'right';
 }
 
-export function InfoTooltip({ text, color }: InfoTooltipProps) {
+export function InfoTooltip({ text, color, position = 'below' }: InfoTooltipProps) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -21,6 +22,10 @@ export function InfoTooltip({ text, color }: InfoTooltipProps) {
     document.addEventListener('pointerdown', handleOutside);
     return () => document.removeEventListener('pointerdown', handleOutside);
   }, [open]);
+
+  const popoverClass = position === 'right'
+    ? 'absolute left-full top-1/2 -translate-y-1/2 ml-2 z-[100] w-52 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg'
+    : 'absolute right-0 top-full mt-1 z-[100] w-52 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg';
 
   return (
     <div ref={ref} className="relative inline-flex items-center">
@@ -36,7 +41,7 @@ export function InfoTooltip({ text, color }: InfoTooltipProps) {
       </button>
       {open && (
         <div
-          className="absolute right-0 top-full mt-1 z-[100] w-52 rounded-md px-2.5 py-2 text-[11px] leading-snug text-white shadow-lg"
+          className={popoverClass}
           style={{ backgroundColor: color }}
         >
           {text}

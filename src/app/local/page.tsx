@@ -11,7 +11,7 @@ import { BrushControls } from '@/components/canvas/BrushControls';
 import { ViewToggle } from '@/components/canvas/ViewToggle';
 import { LanguageToggle } from '@/components/ui/LanguageToggle';
 import { SaveDialog } from '@/components/ui/SaveDialog';
-import { InfoTooltip } from '@/components/ui/InfoTooltip';
+
 
 export default function LocalPage() {
   const t = useTranslations();
@@ -205,24 +205,22 @@ export default function LocalPage() {
             {t('local.signIn')} →
           </Link>
         </div>
-        <div className="flex gap-3 items-center">
-          <div className="flex items-center gap-1.5">
+        <div className="flex gap-3">
+          <div className="flex items-baseline gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#c95a8a]">
               {t('tools.tbsa')}
             </span>
             <span className="font-mono text-[22px] font-medium text-[#c95a8a]">
               {calculation.tbsa.toFixed(1)}%
             </span>
-            <InfoTooltip text={t('info.tbsa')} color="#c95a8a" />
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-baseline gap-1.5">
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#636e72]">
               {t('tools.dbsa')}
             </span>
             <span className="font-mono text-[22px] font-medium text-[#636e72]">
               {calculation.dbsa.toFixed(1)}%
             </span>
-            <InfoTooltip text={t('info.dbsa')} color="#636e72" />
           </div>
         </div>
       </div>
@@ -269,9 +267,36 @@ export default function LocalPage() {
           <CanvasToolbar currentTool={currentTool} onToolChange={setTool} />
         </div>
 
-        {/* View toggle */}
-        <div className="absolute top-1.5 left-0 right-0 z-20 px-2">
-          <ViewToggle activeView={activeView} onViewChange={setActiveView} />
+        {/* View toggle + Brush controls */}
+        <div className="absolute top-1.5 left-1/2 -translate-x-1/2 z-20 w-[68vw] max-w-[320px]">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setActiveView('anterior')}
+              className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
+                activeView === 'anterior'
+                  ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
+                  : 'bg-white text-[#555] border-[#b0b0a8]'
+              }`}
+            >
+              {t('views.front')}
+            </button>
+            <BrushControls
+              brushRadius={brushRadius}
+              currentTool={currentTool}
+              onBrushChange={setBrushRadius}
+              compact
+            />
+            <button
+              onClick={() => setActiveView('posterior')}
+              className={`px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider cursor-pointer border rounded-md shadow-sm transition-colors ${
+                activeView === 'posterior'
+                  ? 'bg-[#1a1a1a] text-white border-[#1a1a1a]'
+                  : 'bg-white text-[#555] border-[#b0b0a8]'
+              }`}
+            >
+              {t('views.back')}
+            </button>
+          </div>
         </div>
 
         {/* Canvas — anterior */}
@@ -301,12 +326,6 @@ export default function LocalPage() {
         </div>
       </div>
 
-      {/* Brush controls */}
-      <BrushControls
-        brushRadius={brushRadius}
-        currentTool={currentTool}
-        onBrushChange={setBrushRadius}
-      />
 
       {/* Albumin + CRP inputs */}
       <div className="px-4 py-3 bg-white border-t border-[#b0b0a8] space-y-2">
@@ -356,13 +375,6 @@ export default function LocalPage() {
         </div>
       </div>
 
-      {/* Info bar */}
-      <div className="px-4 py-2.5 text-[10px] text-[#555] leading-relaxed bg-white border-t border-[#b0b0a8]">
-        <strong className="text-[#1a1a1a]">{t('tools.tbsa')}</strong> ={' '}
-        {t('info.tbsa')}{' '}
-        <strong className="text-[#1a1a1a]">{t('tools.dbsa')}</strong> ={' '}
-        {t('info.dbsa')}
-      </div>
 
       {/* Local footer */}
       <div className="px-4 py-4 text-center">
