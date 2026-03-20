@@ -30,6 +30,7 @@ export default function LocalPage() {
   } = useDrawingEngine();
 
   const [activeView, setActiveView] = useState<View>('anterior');
+  const [showTbsa, setShowTbsa] = useState(true);
   const [showDbsa, setShowDbsa] = useState(true);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadedPatientId, setLoadedPatientId] = useState('');
@@ -219,11 +220,22 @@ export default function LocalPage() {
           </Link>
         </div>
         <div className="flex gap-3">
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setShowTbsa(!showTbsa)}
+              className={`w-5 h-5 flex items-center justify-center rounded border text-[10px] transition-colors ${
+                showTbsa
+                  ? 'border-[#c95a8a] bg-[#c95a8a] text-white'
+                  : 'border-[#b0b0a8] bg-white text-[#999]'
+              }`}
+              title={showTbsa ? t('assessment.hideTbsa') : t('assessment.showTbsa')}
+            >
+              {showTbsa ? '\u25C9' : '\u25CE'}
+            </button>
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#c95a8a]">
               {t('tools.tbsa')}
             </span>
-            <span className="font-mono text-[22px] font-medium text-[#c95a8a]">
+            <span className={`font-mono text-[22px] font-medium text-[#c95a8a] ${!showTbsa ? 'opacity-40' : ''}`}>
               {calculation.tbsa.toFixed(1)}%
             </span>
           </div>
@@ -334,6 +346,7 @@ export default function LocalPage() {
             <BodyCanvas
               view="anterior"
               engine={engine}
+              showTbsa={showTbsa}
               showDbsa={showDbsa}
               onRegister={registerCanvasRefs}
             />
@@ -348,6 +361,7 @@ export default function LocalPage() {
             <BodyCanvas
               view="posterior"
               engine={engine}
+              showTbsa={showTbsa}
               showDbsa={showDbsa}
               onRegister={registerCanvasRefs}
             />

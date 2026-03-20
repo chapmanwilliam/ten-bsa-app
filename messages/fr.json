@@ -235,6 +235,8 @@
     "loadPreviousYes": "Charger",
     "loadPreviousNo": "Recommencer",
     "loadPreviousLoading": "Chargement…",
+    "hideTbsa": "Masquer le calque T-BSA",
+    "showTbsa": "Afficher le calque T-BSA",
     "hideDbsa": "Masquer le calque D-BSA",
     "showDbsa": "Afficher le calque D-BSA"
   },

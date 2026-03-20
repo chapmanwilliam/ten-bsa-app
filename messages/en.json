@@ -235,6 +235,8 @@
     "loadPreviousYes": "Load",
     "loadPreviousNo": "Start Fresh",
     "loadPreviousLoading": "Loading…",
+    "hideTbsa": "Hide T-BSA layer",
+    "showTbsa": "Show T-BSA layer",
     "hideDbsa": "Hide D-BSA layer",
     "showDbsa": "Show D-BSA layer"
   },
