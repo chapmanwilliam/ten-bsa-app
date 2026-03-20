@@ -16,11 +16,11 @@ export function createGrainPattern(): HTMLCanvasElement {
       const s = Math.random();
       let r: number, g: number, b: number, a: number;
       if (s < 0.3) {
-        r = 50; g = 55; b = 60; a = 0.6;
+        r = 50; g = 55; b = 60; a = 0.85;
       } else if (s < 0.6) {
-        r = 90; g = 98; b = 105; a = 0.45;
+        r = 90; g = 98; b = 105; a = 0.75;
       } else {
-        r = 140; g = 148; b = 155; a = 0.3;
+        r = 140; g = 148; b = 155; a = 0.65;
       }
       pctx.fillStyle = `rgba(${r},${g},${b},${a})`;
       pctx.fillRect(x, y, 1, 1);

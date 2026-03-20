@@ -6,6 +6,7 @@ import { DrawingEngine, View } from '@/engine';
 interface BodyCanvasProps {
   view: View;
   engine: DrawingEngine | null;
+  showDbsa?: boolean;
   onRegister: (
     view: View,
     body: HTMLCanvasElement | null,
@@ -24,7 +25,7 @@ interface BodyCanvasProps {
  * 3. dbsa    — DBSA drawing layer (grey grain)
  * 4. interact — transparent interaction layer (captures pointer events)
  */
-export function BodyCanvas({ view, engine, onRegister }: BodyCanvasProps) {
+export function BodyCanvas({ view, engine, showDbsa = true, onRegister }: BodyCanvasProps) {
   const bodyRef = useRef<HTMLCanvasElement>(null);
   const tbsaRef = useRef<HTMLCanvasElement>(null);
   const dbsaRef = useRef<HTMLCanvasElement>(null);
@@ -92,7 +93,7 @@ export function BodyCanvas({ view, engine, onRegister }: BodyCanvasProps) {
     >
       <canvas ref={bodyRef} className="absolute inset-0 w-full h-full" />
       <canvas ref={tbsaRef} className="absolute inset-0 w-full h-full" />
-      <canvas ref={dbsaRef} className="absolute inset-0 w-full h-full" />
+      <canvas ref={dbsaRef} className="absolute inset-0 w-full h-full" style={{ visibility: showDbsa ? 'visible' : 'hidden' }} />
       <canvas ref={interactRef} className="absolute inset-0 w-full h-full" />
     </div>
   );

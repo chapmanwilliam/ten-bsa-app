@@ -234,7 +234,9 @@
     "loadPreviousMessage": "Charger la carte corporelle de l'évaluation précédente ({date}) comme point de départ ? Vous pourrez ensuite ajouter ou effacer des zones.",
     "loadPreviousYes": "Charger",
     "loadPreviousNo": "Recommencer",
-    "loadPreviousLoading": "Chargement…"
+    "loadPreviousLoading": "Chargement…",
+    "hideDbsa": "Masquer le calque D-BSA",
+    "showDbsa": "Afficher le calque D-BSA"
   },
   "patientDetail": {
     "patientInfo": "Informations patient",

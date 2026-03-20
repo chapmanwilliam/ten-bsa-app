@@ -234,7 +234,9 @@
     "loadPreviousMessage": "Load the body map from the previous assessment ({date}) as a starting point? You can then add or erase areas.",
     "loadPreviousYes": "Load",
     "loadPreviousNo": "Start Fresh",
-    "loadPreviousLoading": "Loading…"
+    "loadPreviousLoading": "Loading…",
+    "hideDbsa": "Hide D-BSA layer",
+    "showDbsa": "Show D-BSA layer"
   },
   "patientDetail": {
     "patientInfo": "Patient Information",
