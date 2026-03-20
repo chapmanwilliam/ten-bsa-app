@@ -14,15 +14,15 @@ export function createGrainPattern(): HTMLCanvasElement {
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const s = Math.random();
-      let r: number, g: number, b: number, a: number;
+      let r: number, g: number, b: number;
       if (s < 0.3) {
-        r = 50; g = 55; b = 60; a = 0.85;
+        r = 50; g = 55; b = 60;
       } else if (s < 0.6) {
-        r = 90; g = 98; b = 105; a = 0.75;
+        r = 90; g = 98; b = 105;
       } else {
-        r = 140; g = 148; b = 155; a = 0.65;
+        r = 140; g = 148; b = 155;
       }
-      pctx.fillStyle = `rgba(${r},${g},${b},${a})`;
+      pctx.fillStyle = `rgb(${r},${g},${b})`;
       pctx.fillRect(x, y, 1, 1);
     }
   }

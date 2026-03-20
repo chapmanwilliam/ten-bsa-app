@@ -93,8 +93,8 @@ export function BodyCanvas({ view, engine, showTbsa = true, showDbsa = true, onR
       style={{ aspectRatio: '600 / 1165' }}
     >
       <canvas ref={bodyRef} className="absolute inset-0 w-full h-full" />
-      <canvas ref={tbsaRef} className="absolute inset-0 w-full h-full" style={{ visibility: showTbsa ? 'visible' : 'hidden' }} />
-      <canvas ref={dbsaRef} className="absolute inset-0 w-full h-full" style={{ visibility: showDbsa ? 'visible' : 'hidden' }} />
+      <canvas ref={tbsaRef} className="absolute inset-0 w-full h-full" style={{ opacity: 0.7, visibility: showTbsa ? 'visible' : 'hidden' }} />
+      <canvas ref={dbsaRef} className="absolute inset-0 w-full h-full" style={{ opacity: 0.8, visibility: showDbsa ? 'visible' : 'hidden' }} />
       <canvas ref={interactRef} className="absolute inset-0 w-full h-full" />
     </div>
   );

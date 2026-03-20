@@ -17,7 +17,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT, ANTERIOR_REGIONS, POSTERIOR_REGIONS } from
 import { calculateRegionCoverage, sumBSA } from './calculation';
 import { createGrainPattern } from './grain-pattern';
 
-const TBSA_FILL = 'rgba(201, 90, 138, 0.7)';
+const TBSA_FILL = 'rgb(201, 90, 138)';
 const MAX_UNDO = 40;
 
 export class DrawingEngine {
