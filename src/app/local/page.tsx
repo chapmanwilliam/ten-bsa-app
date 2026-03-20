@@ -30,6 +30,7 @@ export default function LocalPage() {
   } = useDrawingEngine();
 
   const [activeView, setActiveView] = useState<View>('anterior');
+  const [showDbsa, setShowDbsa] = useState(true);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [loadedPatientId, setLoadedPatientId] = useState('');
   const [loadMessage, setLoadMessage] = useState('');
@@ -226,11 +227,22 @@ export default function LocalPage() {
               {calculation.tbsa.toFixed(1)}%
             </span>
           </div>
-          <div className="flex items-baseline gap-1.5">
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setShowDbsa(!showDbsa)}
+              className={`w-5 h-5 flex items-center justify-center rounded border text-[10px] transition-colors ${
+                showDbsa
+                  ? 'border-[#8395a7] bg-[#8395a7] text-white'
+                  : 'border-[#b0b0a8] bg-white text-[#999]'
+              }`}
+              title={showDbsa ? t('assessment.hideDbsa') : t('assessment.showDbsa')}
+            >
+              {showDbsa ? '\u25C9' : '\u25CE'}
+            </button>
             <span className="text-[11px] font-bold uppercase tracking-wide text-[#8395a7]">
               {t('tools.dbsa')}
             </span>
-            <span className="font-mono text-[22px] font-medium text-[#8395a7]">
+            <span className={`font-mono text-[22px] font-medium text-[#8395a7] ${!showDbsa ? 'opacity-40' : ''}`}>
               {calculation.dbsa.toFixed(1)}%
             </span>
           </div>
@@ -322,6 +334,7 @@ export default function LocalPage() {
             <BodyCanvas
               view="anterior"
               engine={engine}
+              showDbsa={showDbsa}
               onRegister={registerCanvasRefs}
             />
           </div>
@@ -335,6 +348,7 @@ export default function LocalPage() {
             <BodyCanvas
               view="posterior"
               engine={engine}
+              showDbsa={showDbsa}
               onRegister={registerCanvasRefs}
             />
           </div>
