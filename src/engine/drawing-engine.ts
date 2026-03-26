@@ -31,6 +31,7 @@ export class DrawingEngine {
   public brushRadius = 12;
   public isDrawing = false;
   public lastPos: Point | null = null;
+  public visibleLayers: Set<'tbsa' | 'dbsa'> = new Set(['tbsa', 'dbsa']);
 
   private onCalculation?: (result: CalculationResult) => void;
 
@@ -167,10 +168,10 @@ export class DrawingEngine {
    * Clear drawing on a single view.
    */
   clearView(view: View): void {
-    if (this.ctxs[`draw-tbsa-${view}`]) {
+    if (this.visibleLayers.has('tbsa') && this.ctxs[`draw-tbsa-${view}`]) {
       this.ctxs[`draw-tbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
-    if (this.ctxs[`draw-dbsa-${view}`]) {
+    if (this.visibleLayers.has('dbsa') && this.ctxs[`draw-dbsa-${view}`]) {
       this.ctxs[`draw-dbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
     // Remove undo entries for this view
@@ -184,10 +185,10 @@ export class DrawingEngine {
   clearAll(): void {
     const views: View[] = ['anterior', 'posterior'];
     for (const view of views) {
-      if (this.ctxs[`draw-tbsa-${view}`]) {
+      if (this.visibleLayers.has('tbsa') && this.ctxs[`draw-tbsa-${view}`]) {
         this.ctxs[`draw-tbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       }
-      if (this.ctxs[`draw-dbsa-${view}`]) {
+      if (this.visibleLayers.has('dbsa') && this.ctxs[`draw-dbsa-${view}`]) {
         this.ctxs[`draw-dbsa-${view}`].clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
       }
     }
@@ -506,8 +507,9 @@ export class DrawingEngine {
     const r = this.brushRadius;
 
     if (this.currentTool === 'eraser') {
-      for (const layerKey of [`draw-tbsa-${view}`, `draw-dbsa-${view}`]) {
-        const ctx = this.ctxs[layerKey];
+      for (const layer of ['tbsa', 'dbsa'] as const) {
+        if (!this.visibleLayers.has(layer)) continue;
+        const ctx = this.ctxs[`draw-${layer}-${view}`];
         if (!ctx) continue;
         if (prev) {
           this.eraseLineAt(ctx, prev.x, prev.y, pos.x, pos.y, r);

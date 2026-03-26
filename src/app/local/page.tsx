@@ -40,6 +40,25 @@ export default function LocalPage() {
   const [crp, setCrp] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Sync layer visibility to engine and auto-switch tool if active layer is hidden
+  useEffect(() => {
+    if (!engine) return;
+    const layers = new Set<'tbsa' | 'dbsa'>([]);
+    if (showTbsa) layers.add('tbsa');
+    if (showDbsa) layers.add('dbsa');
+    engine.visibleLayers = layers;
+  }, [engine, showTbsa, showDbsa]);
+
+  useEffect(() => {
+    if (!showTbsa && currentTool === 'tbsa') {
+      setTool(showDbsa ? 'dbsa' : 'eraser');
+    }
+    if (!showDbsa && currentTool === 'dbsa') {
+      setTool(showTbsa ? 'tbsa' : 'eraser');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showTbsa, showDbsa]);
+
   // Auto-dismiss toasts
   useEffect(() => {
     if (!loadMessage) return;
@@ -300,7 +319,7 @@ export default function LocalPage() {
       <div className="relative py-2">
         {/* Side tools */}
         <div className="absolute left-2 top-12 z-20">
-          <CanvasToolbar currentTool={currentTool} onToolChange={setTool} />
+          <CanvasToolbar currentTool={currentTool} onToolChange={setTool} showTbsa={showTbsa} showDbsa={showDbsa} />
         </div>
 
         {/* Centred column for toggle + canvas */}
